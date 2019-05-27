@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
-import {SafeAreaView, Text} from "react-native";
-import {styles} from "../Settings/Style";
+import {SafeAreaView} from "react-native";
 
 export class Loading extends Component {
     render() {
         return (
-            <SafeAreaView style={styles.view} onLayout={this.props.navigation.navigate("Login")}>
-                <Text>Laden...</Text>
-            </SafeAreaView>
+            <SafeAreaView onLayout={this.props.navigation.navigate("Login")}/>
         );
     }
 }

@@ -2,18 +2,19 @@ import React, {Component} from 'react';
 import {Button, SafeAreaView, TextInput} from "react-native";
 import {styles} from "../Settings/Style";
 
-export class Register extends Component {
+export class ChangeData extends Component {
     static navigationOptions = {
-        title: "Registrieren"
+        headerRight: (
+            <Button
+                onPress={_ => this.save()}
+                title="Speichern"
+            />
+        ),
     };
 
     render() {
         return (
-            <SafeAreaView style={styles.view}>
-                <TextInput style={styles.textInput}
-                    placeholder={"Name"}
-                    textContentType={"name"}
-                />
+            <SafeAreaView style={[styles.view, {marginTop: 10}]}>
                 <TextInput style={styles.textInput}
                     placeholder={"E-Mail"}
                     contentType={"emailAddress"}
@@ -44,17 +45,11 @@ export class Register extends Component {
                     placeholder={"Ort"}
                     textContentType={"addressCity"}
                 />
-                <Button
-                    title={"Registrierung abschließen"}
-                    onPress={_ => register(this.props)}
-                />
             </SafeAreaView>
         );
+    }
 
-        function register(props) {
-            // TODO
-
-            props.navigation.goBack();
-        }
+    static save() {
+        // TODO
     }
 }

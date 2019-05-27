@@ -30,10 +30,10 @@ export class Settings extends Component {
         function itemPressed(item, props) {
             switch (item.key) {
                 case "Kundendaten ändern":
-                    console.log(1);
+                    props.navigation.navigate("ChangeData")
                     break;
                 case "Zahlungsinformationen bearbeiten":
-                    console.log(2);
+                    props.navigation.navigate("BillingInformation")
                     break;
                 case "Benutzer löschen":
                     deleteUser();

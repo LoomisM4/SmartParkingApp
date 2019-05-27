@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, SafeAreaView, TextInput, Text, TouchableHighlight} from "react-native";
+import {Button, SafeAreaView, Text, TextInput} from "react-native";
 import {styles} from "../Settings/Style";
 
 export class Login extends Component {
