@@ -14,7 +14,7 @@ export class ChangeData extends Component {
 
     render() {
         return (
-            <SafeAreaView style={[styles.view, {marginTop: 10}]}>
+            <SafeAreaView style={[styles.view, styles.centerHorizontally, {marginTop: 10}]}>
                 <TextInput style={styles.textInput}
                     placeholder={"E-Mail"}
                     contentType={"emailAddress"}

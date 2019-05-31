@@ -9,7 +9,7 @@ export class Register extends Component {
 
     render() {
         return (
-            <SafeAreaView style={styles.view}>
+            <SafeAreaView style={[styles.view, styles.centerHorizontally]}>
                 <TextInput style={styles.textInput}
                     placeholder={"Name"}
                     textContentType={"name"}

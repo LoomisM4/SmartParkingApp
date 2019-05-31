@@ -25,7 +25,22 @@ export const styles = StyleSheet.create({
         margin: 5
     },
 
-    center: {
+    centerThis: {
         alignSelf: 'center'
+    },
+
+    center: {
+        alignContent: 'center',
+        justifyContent: 'center'
+    },
+
+    centerHorizontally: {
+        alignContent: 'center'
+    },
+
+    circle: {
+        width: 200,
+        height: 200,
+        borderRadius: 100,
     }
 });

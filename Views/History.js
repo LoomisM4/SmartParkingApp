@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {SafeAreaView, Text} from "react-native";
+import {FlatList, SafeAreaView, Text, TouchableHighlight} from "react-native";
 import {styles} from "../Settings/Style";
 
 export class History extends Component {
@@ -10,7 +10,15 @@ export class History extends Component {
     render() {
         return (
             <SafeAreaView style={styles.view}>
-                <Text>TODO</Text>
+                <FlatList
+                    data={[]}
+                    ItemSeparatorComponent={this.FlatListItemSeparator}
+                    renderItem={({item}) => (
+                        <TouchableHighlight onPress={_ => itemPressed(item, this.props)}>
+                            <Text style={styles.listItem}>{item.key}</Text>
+                        </TouchableHighlight>
+                    )}
+                />
             </SafeAreaView>
         );
     }
