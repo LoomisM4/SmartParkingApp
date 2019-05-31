@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AsyncStorage, Button, SafeAreaView, Text, TextInput} from "react-native";
+import {Alert, AsyncStorage, Button, SafeAreaView, Text, TextInput} from "react-native";
 import {styles} from "../Settings/Style";
 
 export class Login extends Component {
@@ -36,20 +36,31 @@ export class Login extends Component {
     }
 
     login = () => {
-        fetch('http://localhost:8080/login', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: this.state.email,
-                password: this.state.password,
-            }),
-        })
-            .then(response => response.json())
-            .then(response => this.handleResponse(response.token))
-            .catch(error => alert(error));
+        // check if the user entered data
+        if (this.state != null &&
+            this.state.email != null &&
+            this.state.email.length > 0 &&
+            this.state.password != null &&
+            this.state.password.length > 0) {
+            // yes he did -> try to login
+            fetch('http://localhost:8080/login', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: this.state.email,
+                    password: this.state.password,
+                }),
+            })
+                .then(response => response.json())
+                .then(response => this.handleResponse(response.token))
+                .catch(error => Alert.alert("Fehler", error));
+        } else {
+            // no he did not
+            Alert.alert("Eingabe überprüfen", "Bitte füllen Sie alle Felder aus.");
+        }
     }
 
     async handleResponse(token) {
@@ -59,7 +70,7 @@ export class Login extends Component {
             this.props.navigation.navigate("Overview");
         } else {
             // Login failed
-            alert("Benutzername oder Kennwort falsch");
+            Alert.alert("Fehler", "Benutzername oder Kennwort falsch");
         }
     }
 }
