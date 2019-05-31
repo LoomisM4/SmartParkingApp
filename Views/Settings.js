@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {FlatList, SafeAreaView, Text, TouchableHighlight} from "react-native";
+import {AsyncStorage, FlatList, SafeAreaView, Text, TouchableHighlight} from "react-native";
 import {styles} from "../Settings/Style";
 
 export class Settings extends Component {
     static navigationOptions = {
-        title: "Einstellungen"
+        title: "Einstellungen",
     };
 
     render() {
@@ -19,40 +19,41 @@ export class Settings extends Component {
                     ]}
                     ItemSeparatorComponent={this.FlatListItemSeparator}
                     renderItem={({item}) => (
-                        <TouchableHighlight onPress={_ => itemPressed(item, this.props)}>
+                        <TouchableHighlight onPress={_ => this.itemPressed(item)}>
                             <Text style={styles.listItem}>{item.key}</Text>
                         </TouchableHighlight>
                     )}
                 />
             </SafeAreaView>
         );
+    }
 
-        function itemPressed(item, props) {
-            switch (item.key) {
-                case "Kundendaten ändern":
-                    props.navigation.navigate("ChangeData")
+    itemPressed(item) {
+        switch (item.key) {
+            case "Kundendaten ändern":
+                this.props.navigation.navigate("ChangeData")
+                break;
+            case "Zahlungsinformationen bearbeiten":
+                this.props.navigation.navigate("BillingInformation")
+                break;
+            case "Benutzer löschen":
+                this.deleteUser();
+                break;
+            case "Ausloggen":
+                this.logout()
                     break;
-                case "Zahlungsinformationen bearbeiten":
-                    props.navigation.navigate("BillingInformation")
-                    break;
-                case "Benutzer löschen":
-                    deleteUser();
-                    break;
-                case "Ausloggen":
-                    logout(props)
-                    break;
-                default:
-                    Console.log("Something went wrong");
-            }
+            default:
+                Console.log("Something went wrong");
         }
-        
-        function deleteUser() {
-            // TODO
-        }
+    }
 
-        function logout(props) {
-            props.navigation.navigate("Login")
-        }
+    deleteUser() {
+        // TODO
+    }
+
+    async logout() {
+        await AsyncStorage.clear();
+        this.props.navigation.navigate("Login")
     }
 
     FlatListItemSeparator = () => {
