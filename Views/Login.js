@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import {Alert, AsyncStorage, Button, SafeAreaView, Text, TextInput} from "react-native";
+import {Alert, Button, SafeAreaView, Text, TextInput} from "react-native";
 import {styles} from "../Settings/Style";
+import {connectionDetails, getRoute} from "../Settings/Application";
+import AsyncStorage from "@react-native-community/async-storage";
 
 export class Login extends Component {
     static navigationOptions = {
@@ -43,7 +45,7 @@ export class Login extends Component {
             this.state.password != null &&
             this.state.password.length > 0) {
             // yes he did -> try to login
-            fetch('http://localhost:8080/login', {
+            fetch(getRoute("login"), {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -61,7 +63,7 @@ export class Login extends Component {
             // no he did not
             Alert.alert("Eingabe überprüfen", "Bitte füllen Sie alle Felder aus.");
         }
-    }
+    };
 
     async handleResponse(token) {
         if (token != undefined) {

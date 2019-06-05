@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import {AsyncStorage, FlatList, SafeAreaView, Text, TouchableHighlight} from "react-native";
+import {Alert, FlatList, SafeAreaView, Text, TouchableHighlight} from "react-native";
 import {styles} from "../Settings/Style";
+import AsyncStorage from "@react-native-community/async-storage";
+import {getRoute} from "../Settings/Application";
 
 export class Settings extends Component {
     static navigationOptions = {
@@ -15,7 +17,8 @@ export class Settings extends Component {
                         {key: "Kundendaten ändern"},
                         {key: "Zahlungsinformationen bearbeiten"},
                         {key: "Benutzer löschen"},
-                        {key: "Ausloggen"}
+                        {key: "Ausloggen"},
+                        {key: "App zurücksetzen"}
                     ]}
                     ItemSeparatorComponent={this.FlatListItemSeparator}
                     renderItem={({item}) => (
@@ -31,27 +34,50 @@ export class Settings extends Component {
     itemPressed(item) {
         switch (item.key) {
             case "Kundendaten ändern":
-                this.props.navigation.navigate("ChangeData")
+                this.props.navigation.navigate("ChangeData");
                 break;
             case "Zahlungsinformationen bearbeiten":
-                this.props.navigation.navigate("BillingInformation")
+                this.props.navigation.navigate("BillingInformation");
                 break;
             case "Benutzer löschen":
                 this.deleteUser();
                 break;
             case "Ausloggen":
-                this.logout()
-                    break;
+                this.logout();
+                break;
+            case "App zurücksetzen":
+                this.resetApp();
+                break;
             default:
-                Console.log("Something went wrong");
+                Alert.alert("Fehler", "Ups, da ist etwas schiefgelaufen");
         }
     }
 
     deleteUser() {
         // TODO
+        fetch(getRoute("TODO"), {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                bearer: "TODO",
+            }),
+        })
+            .then(response => response.json())
+            .catch(error => Alert.alert("Fehler", error));
+
+        // User is deleted -> to remove the token from the storage do a logout
+        this.logout().then(Alert.alert("Auf wiedersehen", "Ihr Account wurde erfolgreich gelöscht."));
     }
 
     async logout() {
+        await AsyncStorage.removeItem("token");
+        this.props.navigation.navigate("Login")
+    }
+
+    async resetApp() {
         await AsyncStorage.clear();
         this.props.navigation.navigate("Login")
     }
