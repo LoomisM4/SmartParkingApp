@@ -1,44 +1,55 @@
 import React, {Component} from 'react';
-import {SafeAreaView, ActivityIndicator, Alert} from "react-native";
+import {ActivityIndicator, SafeAreaView} from "react-native";
 import {styles} from "../Settings/Style";
 import AsyncStorage from "@react-native-community/async-storage";
+import Ctx from "../Context";
 import {getRoute} from "../Settings/Application";
 
 export class Loading extends Component {
+    valid: Boolean;
+
     constructor(props) {
         super(props);
-        this.seekToken();
-    }
+        this.seekToken().catch(console.log);
+    };
 
-    async seekToken() {
-        const token = await AsyncStorage.getItem("token");
-        if (token != null) {
-            // // token is available -> validate it
-            // fetch(getRoute("validate"), {
-            //     method: 'GET',
-            //     headers: {
-            //         Accept: 'application/json',
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({
-            //         bearer: token,
-            //     }),
-            // })
-            //     .then(response => response.json())
-            //     .then(response => {
-            //         if (response.validated)
-            //         // Token is valid -> switch to Overview
-            //             this.props.navigation.navigate("Overview");
-            //         else
-            //         // Token not valid -> User has to login again
-            //             this.props.navigation.navigate("Login");
-            //     })
-            //     .catch(error => Alert.alert("Fehler", error));
+    async navigateToNextView() {
+        if (this.valid === true) {
+            // Token is valid -> switch to Overview
             this.props.navigation.navigate("Overview");
         } else {
-            // no token -> login
+            // no or invalid token-> login
             this.props.navigation.navigate("Login");
         }
+    };
+
+    async validateToken() {
+        if (Ctx.token != null) {
+            // token is available -> validate it
+            await fetch(getRoute("validate"), {
+                method: 'GET',
+                withCredentials: true,
+                credentials: 'include',
+                headers: {
+                    Authorization: 'Bearer ' + Ctx.token
+                }
+            })
+                .then(response => response.json())
+                .then(response => this.valid = response.validated)
+                .catch(console.log);
+        }
+
+        this.navigateToNextView().catch(console.log);
+    };
+
+    async seekToken() {
+        await AsyncStorage.getItem("token").then(t => {
+            if (t != null) {
+                Ctx.token = t.toString();
+            }
+        });
+
+        this.validateToken().catch(console.log);
     }
 
     render() {
