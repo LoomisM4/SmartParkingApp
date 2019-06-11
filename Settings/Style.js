@@ -9,6 +9,12 @@ export const styles = StyleSheet.create({
         padding: 20,
     },
 
+    information: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        paddingTop: -20,
+    },
+
     textInput: {
         width: '80%',
         height: 40,
@@ -39,8 +45,8 @@ export const styles = StyleSheet.create({
     },
 
     circle: {
-        width: 200,
-        height: 200,
-        borderRadius: 100,
+        width: 300,
+        height: 300,
+        borderRadius: 150,
     }
 });

@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import {ActivityIndicator, SafeAreaView} from "react-native";
 import {styles} from "../Settings/Style";
 import AsyncStorage from "@react-native-community/async-storage";
-import Ctx from "../Context";
-import {getRoute} from "../Settings/Application";
+import UserHelper from "../Helper/UserHelper";
+import ApiHelper from "../Helper/ApiHelper";
 
 export class Loading extends Component {
     valid: Boolean;
@@ -24,16 +24,9 @@ export class Loading extends Component {
     };
 
     async validateToken() {
-        if (Ctx.token != null) {
+        if (UserHelper.token != null) {
             // token is available -> validate it
-            await fetch(getRoute("validate"), {
-                method: 'GET',
-                withCredentials: true,
-                credentials: 'include',
-                headers: {
-                    Authorization: 'Bearer ' + Ctx.token
-                }
-            })
+            await new ApiHelper().doValidate()
                 .then(response => response.json())
                 .then(response => this.valid = response.validated)
                 .catch(console.log);
@@ -45,7 +38,7 @@ export class Loading extends Component {
     async seekToken() {
         await AsyncStorage.getItem("token").then(t => {
             if (t != null) {
-                Ctx.token = t.toString();
+                UserHelper.token = t.toString();
             }
         });
 

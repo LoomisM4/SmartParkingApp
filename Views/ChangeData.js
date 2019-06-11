@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {Alert, Button, SafeAreaView, TextInput} from "react-native";
 import {styles} from "../Settings/Style";
 import {getRoute} from "../Settings/Application";
-import Ctx from "../Context";
+import UserHelper from "../Helper/UserHelper";
+import ApiHelper from "../Helper/ApiHelper";
 
 export class ChangeData extends Component {
     static navigationOptions = {
@@ -32,7 +33,7 @@ export class ChangeData extends Component {
             withCredentials: true,
             credentials: 'include',
             headers: {
-                Authorization: 'Bearer ' + Ctx.token
+                Authorization: 'Bearer ' + UserHelper.token
             }
         })
             .then(response => response.json())
@@ -94,26 +95,7 @@ export class ChangeData extends Component {
         }
 
         // everything is fine -> save the new information
-        fetch(getRoute("resolve/" + ChangeData.details.email), {
-            method: 'PUT',
-            withCredentials: true,
-            credentials: 'include',
-            headers: {
-                Authorization: 'Bearer ' + Ctx.token,
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: {
-                username: ChangeData.details.email,
-                password: ChangeData.details.password,
-                address: {
-                    street: ChangeData.details.street,
-                    houseNumber: ChangeData.details.nr,
-                    postalCode: ChangeData.details.zip,
-                    country: ChangeData.details.city
-                }
-            }
-        })
+        new ApiHelper().doUpdate()
             .catch(console.log);
     }
 }

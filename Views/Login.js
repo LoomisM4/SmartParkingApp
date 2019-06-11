@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import {Alert, Button, SafeAreaView, Text, TextInput} from "react-native";
+import {Button, SafeAreaView, Text, TextInput} from "react-native";
 import {styles} from "../Settings/Style";
-import {connectionDetails, getRoute} from "../Settings/Application";
 import AsyncStorage from "@react-native-community/async-storage";
+import {sendAlert, sendErrorAlert} from "../Helper/AlertHelper";
+import UserHelper from "../Helper/UserHelper";
+import ApiHelper from "../Helper/ApiHelper";
 
 export class Login extends Component {
     static navigationOptions = {
@@ -45,34 +47,25 @@ export class Login extends Component {
             this.state.password != null &&
             this.state.password.length > 0) {
             // yes he did -> try to login
-            fetch(getRoute("login"), {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: this.state.email,
-                    password: this.state.password,
-                }),
-            })
+            new ApiHelper().doLogin(this.state.email, this.state.password)
                 .then(response => response.json())
                 .then(response => this.handleResponse(response.token))
-                .catch(error => Alert.alert("Fehler", error));
+                .catch(console.log);
         } else {
             // no he did not
-            Alert.alert("Eingabe überprüfen", "Bitte füllen Sie alle Felder aus.");
+            sendAlert("Eingabe überprüfen", "Bitte füllen Sie alle Felder aus.");
         }
     };
 
     async handleResponse(token) {
-        if (token != undefined) {
+        if (token !== undefined) {
             // Login was successful -> we have a token that has to be stored
             await AsyncStorage.setItem("token", token);
+            UserHelper.token = token;
             this.props.navigation.navigate("Overview");
         } else {
             // Login failed
-            Alert.alert("Fehler", "Benutzername oder Kennwort falsch");
+            sendErrorAlert("Benutzername oder Kennwort falsch");
         }
     }
 }

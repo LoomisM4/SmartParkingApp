@@ -3,6 +3,7 @@ import {Alert, Button, SafeAreaView, TextInput} from "react-native";
 import {styles} from "../Settings/Style";
 import {getRoute} from "../Settings/Application";
 import AsyncStorage from "@react-native-community/async-storage";
+import UserHelper from "../Helper/UserHelper";
 
 export class Register extends Component {
     static navigationOptions = {
@@ -109,8 +110,9 @@ export class Register extends Component {
 
     async handleResponse(token) {
         if (token != undefined) {
-            // Login was successful -> we have a token that has to be stored
+            // Registration was successful -> we have a token that has to be stored
             await AsyncStorage.setItem("token", token);
+            UserHelper.token = token;
             this.props.navigation.navigate("Overview");
         } else {
             // Login failed

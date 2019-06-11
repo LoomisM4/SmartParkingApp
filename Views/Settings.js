@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {Alert, FlatList, SafeAreaView, Text, TouchableHighlight} from "react-native";
+import {FlatList, SafeAreaView, Text, TouchableHighlight} from "react-native";
 import {styles} from "../Settings/Style";
 import AsyncStorage from "@react-native-community/async-storage";
-import {getRoute} from "../Settings/Application";
+import {sendAlert, sendErrorAlert} from "../Helper/AlertHelper";
+import ApiHelper from "../Helper/ApiHelper";
 
 export class Settings extends Component {
     static navigationOptions = {
@@ -43,33 +44,26 @@ export class Settings extends Component {
                 this.deleteUser();
                 break;
             case "Ausloggen":
-                this.logout();
+                this.logout().then(console.log.bind(this, "Der Benutzer hat sich ausgeloggt"));
                 break;
             case "App zurücksetzen":
-                this.resetApp();
+                this.resetApp().then(console.log.bind(this, "App wurde durch den Benutzer zurückgesetzt"));
                 break;
             default:
-                Alert.alert("Fehler", "Ups, da ist etwas schiefgelaufen");
+                sendErrorAlert("Ups, da ist etwas schiefgelaufen");
         }
     }
 
     deleteUser() {
         // TODO
-        fetch(getRoute("TODO"), {
-            method: 'DELETE',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                bearer: "TODO",
-            }),
-        })
-            .then(response => response.json())
-            .catch(error => Alert.alert("Fehler", error));
+        new ApiHelper().doDelete()
+            .then(this.handlePostDeleteStuff)
+            .catch(console.log);
+    }
 
+    handlePostDeleteStuff() {
         // User is deleted -> to remove the token from the storage do a logout
-        this.logout().then(Alert.alert("Auf wiedersehen", "Ihr Account wurde erfolgreich gelöscht."));
+        this.logout().then(sendAlert.bind(this, "Auf wiedersehen", "Ihr Account wurde erfolgreich gelöscht."));
     }
 
     async logout() {
