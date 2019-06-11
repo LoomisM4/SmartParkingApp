@@ -29,11 +29,27 @@ const settingsStack = createStackNavigator(
     }
 );
 
+const historyStack = createStackNavigator(
+    {
+        History: History
+    }
+);
+
 const mainApp = createBottomTabNavigator(
     {
         Overview: Overview,
-        History: History,
-        Settings: settingsStack
+        History: {
+            navigationOptions: {
+                title: "Historie"
+            },
+            screen: historyStack
+        },
+        Settings: {
+            navigationOptions: {
+                title: "Einstellungen"
+            },
+            screen: settingsStack
+        }
     }
 );
 
@@ -42,7 +58,6 @@ const App = createAppContainer(createSwitchNavigator(
         Loading: Loading,
         Authentication: authenticationStack,
         Main: mainApp,
-        Settings: Register
     },
     {
         initialRouteName: "Loading"
