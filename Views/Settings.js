@@ -23,7 +23,7 @@ export class Settings extends Component {
                     ]}
                     ItemSeparatorComponent={this.FlatListItemSeparator}
                     renderItem={({item}) => (
-                        <TouchableHighlight onPress={_ => this.itemPressed(item)}>
+                        <TouchableHighlight onPress={() => this.itemPressed(item)}>
                             <Text style={styles.listItem}>{item.key}</Text>
                         </TouchableHighlight>
                     )}
@@ -32,7 +32,7 @@ export class Settings extends Component {
         );
     }
 
-    itemPressed(item) {
+    itemPressed = (item) => {
         switch (item.key) {
             case "Kundendaten ändern":
                 this.props.navigation.navigate("ChangeData");
@@ -52,19 +52,18 @@ export class Settings extends Component {
             default:
                 sendErrorAlert("Ups, da ist etwas schiefgelaufen");
         }
-    }
+    };
 
-    deleteUser() {
-        // TODO
-        new ApiHelper().doDelete()
+    deleteUser = () => {
+        ApiHelper.doDelete()
             .then(this.handlePostDeleteStuff)
             .catch(console.log);
-    }
+    };
 
-    handlePostDeleteStuff() {
+    handlePostDeleteStuff = () => {
         // User is deleted -> to remove the token from the storage do a logout
         this.logout().then(sendAlert.bind(this, "Auf wiedersehen", "Ihr Account wurde erfolgreich gelöscht."));
-    }
+    };
 
     async logout() {
         await AsyncStorage.removeItem("token");
@@ -78,7 +77,7 @@ export class Settings extends Component {
 
     FlatListItemSeparator = () => {
         return (
-            <SafeAreaView style={{height: 0.5, width: '100%', backgroundColor: '#C8C8C8'}}/>
+            <SafeAreaView style={{height: 1, width: '100%', backgroundColor: '#C8C8C8'}}/>
         );
     };
 }

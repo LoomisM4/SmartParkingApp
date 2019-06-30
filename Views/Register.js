@@ -4,15 +4,26 @@ import {styles} from "../Settings/Style";
 import {getRoute} from "../Settings/Application";
 import AsyncStorage from "@react-native-community/async-storage";
 import UserHelper from "../Helper/UserHelper";
+import ApiHelper from "../Helper/ApiHelper";
 
 export class Register extends Component {
     static navigationOptions = {
         title: "Registrieren"
     };
 
+    state = {
+        email: "",
+        password: "",
+        password2: "",
+        street: "",
+        nr: "",
+        zip: "",
+        city: ""
+    };
+
     render() {
         return (
-            <SafeAreaView style={[styles.view, styles.centerHorizontally]}>
+            <SafeAreaView style={[styles.view, styles.centerHorizontally, {marginTop: 10}]}>
                 <TextInput style={styles.textInput}
                     placeholder={"E-Mail"}
                     contentType={"emailAddress"}
@@ -59,57 +70,46 @@ export class Register extends Component {
     }
 
     register = () => {
-        if (this.state == null ||
-            this.state.email == null ||
-            this.state.email.length == 0 ||
-            this.state.password == null ||
-            this.state.password.length == 0 ||
+        if (this.state === null ||
+            this.state.email === null ||
+            this.state.email.length === 0 ||
+            this.state.password === null ||
+            this.state.password.length === 0 ||
             this.state.password2 == null ||
-            this.state.password2.length == 0 ||
-            this.state.street == null ||
-            this.state.street.length == 0 ||
-            this.state.nr == null ||
-            this.state.nr.length == 0 ||
-            this.state.zip == null ||
-            this.state.zip.length == 0 ||
-            this.state.city == null ||
-            this.state.city.length == 0) {
+            this.state.password2.length === 0 ||
+            this.state.street === null ||
+            this.state.street.length === 0 ||
+            this.state.nr === null ||
+            this.state.nr.length === 0 ||
+            this.state.zip === null ||
+            this.state.zip.length === 0 ||
+            this.state.city === null ||
+            this.state.city.length === 0) {
             // not every field is filled
             Alert.alert("Fehler", "Bitte füllen Sie alle Felder aus.");
             return;
         }
 
-        if (this.state.password != this.state.password2) {
+        if (this.state.password !== this.state.password2) {
             // password and password2 are not equal
             Alert.alert("Fehler", "Die beiden Passwörter stimmen nicht überein.");
             return;
         }
 
         // Everything is fine. Do the request
-        fetch(getRoute("signup"), {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: this.state.email,
-                password: this.state.password,
-                address: {
-                    street: this.state.street,
-                    houseNumber: this.state.nr,
-                    postalCode: this.state.zip,
-                    country: this.state.city
-                }
-            }),
-        })
+        ApiHelper.doRegister(this.state.email,
+            this.state.password,
+            this.state.street,
+            this.state.nr,
+            this.state.zip,
+            this.state.city)
             .then(response => response.json())
             .then(response => this.handleResponse(response.token))
             .catch(error => Alert.alert("Fehler", error));
-    }
+    };
 
     async handleResponse(token) {
-        if (token != undefined) {
+        if (token !== undefined) {
             // Registration was successful -> we have a token that has to be stored
             await AsyncStorage.setItem("token", token);
             UserHelper.token = token;

@@ -3,7 +3,7 @@ import {getRoute} from "../Settings/Application";
 import UserHelper from "./UserHelper";
 
 export default class ApiHelper {
-    doLogin(email, password) {
+    static doLogin(email, password) {
         return fetch(getRoute("login"), {
             method: 'POST',
             headers: {
@@ -17,8 +17,28 @@ export default class ApiHelper {
         });
     }
 
-    doUpdate() {
-        return fetch(getRoute("resolve/" + ChangeData.details.email), {
+    static doRegister(email, password, street, nr, zip, city) {
+        return fetch(getRoute("signup"), {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: email,
+                password: password,
+                address: {
+                    street: street,
+                    houseNumber: nr,
+                    postalCode: zip,
+                    country: city
+                }
+            }),
+        })
+    }
+
+    static doUpdate(email, password, street, nr, zip, city) {
+        return fetch(getRoute(""), {
             method: 'PUT',
             withCredentials: true,
             credentials: 'include',
@@ -28,36 +48,77 @@ export default class ApiHelper {
                 'Content-Type': 'application/json',
             },
             body: {
-                username: ChangeData.details.email,
-                password: ChangeData.details.password,
+                username: email,
+                password: password,
                 address: {
-                    street: ChangeData.details.street,
-                    houseNumber: ChangeData.details.nr,
-                    postalCode: ChangeData.details.zip,
-                    country: ChangeData.details.city
+                    street: street,
+                    houseNumber: nr,
+                    postalCode: zip,
+                    country: city
                 }
             }
         })
     }
 
-    doValidate() {
+    static doValidate() {
         return fetch(getRoute("validate"), {
             method: 'GET',
             withCredentials: true,
             credentials: 'include',
             headers: {
-                Authorization: 'Bearer ' + UserHelper.token
+                Authorization: 'Bearer ' + UserHelper.token,
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
             }
         })
     }
 
-    doDelete() {
-        return fetch(getRoute("USERNAME"), {
+    static doDelete() {
+        return fetch(getRoute(""), {
             method: 'DELETE',
             withCredentials: true,
             credentials: 'include',
             headers: {
-                Authorization: 'Bearer ' + UserHelper.token
+                Authorization: 'Bearer ' + UserHelper.token,
+            }
+        });
+    }
+
+    static getOverview() {
+        return fetch(getRoute("overview"), {
+            method: 'POST',
+            withCredentials: true,
+            credentials: 'include',
+            headers: {
+                Authorization: 'Bearer ' + UserHelper.token,
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            }
+        });
+    }
+
+    static getHistory() {
+        return fetch(getRoute("history"), {
+            method: 'POST',
+            withCredentials: true,
+            credentials: 'include',
+            headers: {
+                Authorization: 'Bearer ' + UserHelper.token,
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            }
+        });
+    }
+
+    static getUserInformation() {
+        return fetch(getRoute("resolve"), {
+            method: 'GET',
+            withCredentials: true,
+            credentials: 'include',
+            headers: {
+                Authorization: 'Bearer ' + UserHelper.token,
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
             }
         });
     }

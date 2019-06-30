@@ -32,7 +32,7 @@ export class Login extends Component {
                 <Text style={[styles.centerThis, {marginTop: 5}]}>oder
                     <Text
                         style={{color: 'blue'}}
-                        onPress={_ => this.props.navigation.navigate("Register")}> Registrieren
+                        onPress={() => this.props.navigation.navigate("Register")}> Registrieren
                     </Text>
                 </Text>
             </SafeAreaView>
@@ -47,7 +47,7 @@ export class Login extends Component {
             this.state.password != null &&
             this.state.password.length > 0) {
             // yes he did -> try to login
-            new ApiHelper().doLogin(this.state.email, this.state.password)
+            ApiHelper.doLogin(this.state.email, this.state.password)
                 .then(response => response.json())
                 .then(response => this.handleResponse(response.token))
                 .catch(console.log);
@@ -58,6 +58,7 @@ export class Login extends Component {
     };
 
     async handleResponse(token) {
+        console.log(token);
         if (token !== undefined) {
             // Login was successful -> we have a token that has to be stored
             await AsyncStorage.setItem("token", token);

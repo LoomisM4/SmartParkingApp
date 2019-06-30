@@ -26,7 +26,7 @@ export class Loading extends Component {
     async validateToken() {
         if (UserHelper.token != null) {
             // token is available -> validate it
-            await new ApiHelper().doValidate()
+            await ApiHelper.doValidate()
                 .then(response => response.json())
                 .then(response => this.valid = response.validated)
                 .catch(console.log);
