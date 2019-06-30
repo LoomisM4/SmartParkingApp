@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {Button, RefreshControl, ScrollView, SafeAreaView, Text, View} from "react-native";
+import {RefreshControl, ScrollView, SafeAreaView, Text, View} from "react-native";
 import {styles} from "../Settings/Style";
 import ApiHelper from "../Helper/ApiHelper";
 
 export class Overview extends Component {
+    // noinspection JSUnusedGlobalSymbols
     static navigationOptions = {
         title: "Übersicht",
     };

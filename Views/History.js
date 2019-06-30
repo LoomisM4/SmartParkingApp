@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {FlatList, RefreshControl, ScrollView, SafeAreaView, Text, TouchableHighlight} from "react-native";
+import {FlatList, RefreshControl, ScrollView, SafeAreaView, Text} from "react-native";
 import {styles} from "../Settings/Style";
 import ApiHelper from "../Helper/ApiHelper";
 
 export class History extends Component {
+    // noinspection JSUnusedGlobalSymbols
     static navigationOptions = {
         title: "Historie"
     };
@@ -46,6 +47,7 @@ export class History extends Component {
     }
 
     render() {
+        // noinspection JSUnresolvedVariable,JSUnresolvedVariable
         return (
             <SafeAreaView style={styles.view}>
                 <ScrollView>

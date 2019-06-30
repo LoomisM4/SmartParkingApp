@@ -7,6 +7,7 @@ import UserHelper from "../Helper/UserHelper";
 import ApiHelper from "../Helper/ApiHelper";
 
 export class Login extends Component {
+    // noinspection JSUnusedGlobalSymbols
     static navigationOptions = {
         header: null
     };

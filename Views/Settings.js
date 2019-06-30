@@ -6,6 +6,7 @@ import {sendAlert, sendErrorAlert} from "../Helper/AlertHelper";
 import ApiHelper from "../Helper/ApiHelper";
 
 export class Settings extends Component {
+    // noinspection JSUnusedGlobalSymbols
     static navigationOptions = {
         title: "Einstellungen",
     };

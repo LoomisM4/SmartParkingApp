@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {Alert, Button, SafeAreaView, TextInput} from "react-native";
+import {Button, SafeAreaView, TextInput} from "react-native";
 import {styles} from "../Settings/Style";
 import ApiHelper from "../Helper/ApiHelper";
-import UserHelper from "../Helper/UserHelper";
 import {sendAlert, sendErrorAlert} from "../Helper/AlertHelper";
 
 export class ChangeData extends Component {
@@ -74,9 +73,13 @@ export class ChangeData extends Component {
 
     handleResponse = (response) => {
         this.setState({email: response.username});
+        // noinspection JSUnresolvedVariable
         this.setState({street: response.addressResponse.street});
+        // noinspection JSUnresolvedVariable
         this.setState({nr: response.addressResponse.houseNumber.toString()});
+        // noinspection JSUnresolvedVariable
         this.setState({zip: response.addressResponse.postalCode.toString()});
+        // noinspection JSUnresolvedVariable
         this.setState({city: response.addressResponse.country});
     };
 

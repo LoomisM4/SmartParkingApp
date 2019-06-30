@@ -12,8 +12,4 @@ export class BillingInformation extends Component {
             </SafeAreaView>
         );
     }
-
-    save = () => {
-        // TODO
-    }
 }

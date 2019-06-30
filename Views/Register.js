@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {Alert, Button, SafeAreaView, TextInput} from "react-native";
 import {styles} from "../Settings/Style";
-import {getRoute} from "../Settings/Application";
 import AsyncStorage from "@react-native-community/async-storage";
 import UserHelper from "../Helper/UserHelper";
 import ApiHelper from "../Helper/ApiHelper";
 
 export class Register extends Component {
+    // noinspection JSUnusedGlobalSymbols
     static navigationOptions = {
         title: "Registrieren"
     };
