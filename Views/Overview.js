@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {RefreshControl, ScrollView, SafeAreaView, Text, View} from "react-native";
+import {RefreshControl, SafeAreaView, ScrollView, Text, View} from "react-native";
 import {styles} from "../Settings/Style";
 import ApiHelper from "../Helper/ApiHelper";
 
@@ -23,7 +23,7 @@ export class Overview extends Component {
         ApiHelper.getOverview()
             .then(response => response.json())
             .then(response => this.updateOverview(response.bookingId))
-            .catch(() => this.updateOverview(false));
+            .catch(() => this.updateOverview(null));
     }
 
     updateOverview = (bookingId) => {
@@ -45,8 +45,8 @@ export class Overview extends Component {
         this.setState({refreshing: true});
         ApiHelper.getOverview()
             .then(response => response.json())
-            .then(() => this.updateOverview(true))
-            .catch(() => this.updateOverview(false));
+            .then(response => this.updateOverview(response.bookingId))
+            .catch(() => this.updateOverview(null));
     };
 
     render() {

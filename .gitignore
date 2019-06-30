@@ -23,4 +23,4 @@ node_modules/
 # Bundle artifact
 ios/
 android
-API_test.http
+__tests__/API_test.http
