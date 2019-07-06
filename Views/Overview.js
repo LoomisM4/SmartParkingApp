@@ -22,17 +22,26 @@ export class Overview extends Component {
 
         ApiHelper.getOverview()
             .then(response => response.json())
-            .then(response => this.updateOverview(response.bookingId))
+            .then(response => this.updateOverview(response))
             .catch(() => this.updateOverview(null));
     }
 
-    updateOverview = (bookingId) => {
-        if (bookingId !== null && bookingId !== undefined && Number.isInteger(bookingId))
+    updateOverview = (response) => {
+        if (response != null &&
+            response.bookingId !== null &&
+            response.bookingId !== undefined &&
+            Number.isInteger(response.bookingId)) {
+            let now = Date.now();
+            let start = Date.parse(response.parkingStart.substring(0, 19));
+            let difference = (now - start) / 60000 + 120;
+            let duration = Math.round(difference)
             this.setState({
                 circleColor: 'green',
-                circleText: "Geparkt"
+                circleText: "Geparkt",
+                cost: response.cost,
+                parkingDuration: duration + " min"
             });
-        else
+        } else
             this.setState({
             circleColor: 'yellow',
             circleText: "nicht geparkt"
@@ -45,7 +54,7 @@ export class Overview extends Component {
         this.setState({refreshing: true});
         ApiHelper.getOverview()
             .then(response => response.json())
-            .then(response => this.updateOverview(response.bookingId))
+            .then(response => this.updateOverview(response))
             .catch(() => this.updateOverview(null));
     };
 

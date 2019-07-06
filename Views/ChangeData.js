@@ -80,7 +80,7 @@ export class ChangeData extends Component {
         // noinspection JSUnresolvedVariable
         this.setState({zip: response.addressResponse.postalCode.toString()});
         // noinspection JSUnresolvedVariable
-        this.setState({city: response.addressResponse.country});
+        this.setState({city: response.addressResponse.city});
     };
 
     save = () => {
@@ -105,7 +105,7 @@ export class ChangeData extends Component {
         // everything is fine -> save the new information
         ApiHelper.doUpdate(this.state.email, this.state.password, this.state.street, this.state.nr,
             this.state.zip, this.state.city)
-            .then(this.props.navigation.pop())
+            .then(() => this.props.navigation.goBack())
             .catch(sendErrorAlert.bind("Da ist etwas schiefgelaufen"));
     }
 }

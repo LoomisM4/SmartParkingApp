@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FlatList, RefreshControl, ScrollView, SafeAreaView, Text} from "react-native";
+import {FlatList, RefreshControl, SafeAreaView, ScrollView, Text} from "react-native";
 import {styles} from "../Settings/Style";
 import ApiHelper from "../Helper/ApiHelper";
 
@@ -25,7 +25,10 @@ export class History extends Component {
     }
 
     handleResponse = (response) => {
-        this.setState({data: response, refreshing: false});
+        if (response === null || response === undefined || response.length === 0)
+            this.setState({data: [], emptyText: "Noch keine Einträge vorhanden", refreshing: false});
+        else
+            this.setState({data: response, refreshing: false});
     };
 
     refresh = () => {
@@ -60,7 +63,7 @@ export class History extends Component {
                             keyExtractor={(item, index) => index.toString()}
                             renderItem={({item}) => (
                                 <SafeAreaView>
-                                    <Text style={styles.listItem}>Preis: {item.cost}</Text>
+                                    <Text style={styles.listItem}>Preis: {item.invoiceAmount} €</Text>
                                     <Text style={styles.listItem}>Start: {this.getFormattedString(item.parkingStart)}</Text>
                                     <Text style={styles.listItem}>Ende: {this.getFormattedString(item.parkingEnd)}</Text>
                                 </SafeAreaView>

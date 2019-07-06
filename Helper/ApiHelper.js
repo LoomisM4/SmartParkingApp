@@ -31,32 +31,33 @@ export default class ApiHelper {
                     street: street,
                     houseNumber: nr,
                     postalCode: zip,
-                    country: city
+                    city: city,
+                    country: "-"
                 }
             }),
         })
     }
 
     static doUpdate(email, password, street, nr, zip, city) {
-        return fetch(getRoute(""), {
+        return fetch(getRoute("user"), {
             method: 'PUT',
             withCredentials: true,
             credentials: 'include',
             headers: {
                 Authorization: 'Bearer ' + UserHelper.token,
-                Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: {
+            body: JSON.stringify({
                 username: email,
                 password: password,
                 address: {
                     street: street,
                     houseNumber: nr,
                     postalCode: zip,
-                    country: city
+                    city: city,
+                    country: "-"
                 }
-            }
+            })
         })
     }
 
@@ -74,7 +75,7 @@ export default class ApiHelper {
     }
 
     static doDelete() {
-        return fetch(getRoute(""), {
+        return fetch(getRoute("user"), {
             method: 'DELETE',
             withCredentials: true,
             credentials: 'include',
@@ -86,7 +87,7 @@ export default class ApiHelper {
 
     static getOverview() {
         return fetch(getRoute("overview"), {
-            method: 'POST',
+            method: 'GET',
             withCredentials: true,
             credentials: 'include',
             headers: {
@@ -99,7 +100,7 @@ export default class ApiHelper {
 
     static getHistory() {
         return fetch(getRoute("history"), {
-            method: 'POST',
+            method: 'GET',
             withCredentials: true,
             credentials: 'include',
             headers: {
