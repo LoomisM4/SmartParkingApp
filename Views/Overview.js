@@ -15,7 +15,7 @@ export class Overview extends Component {
         this.state = {
             circleColor: 'yellow',
             circleText: "nicht geparkt",
-            parkingDuration: "H:mm",
+            parkingDuration: "min",
             cost: "0,00",
             refreshing: false,
         };
@@ -34,7 +34,7 @@ export class Overview extends Component {
             let now = Date.now();
             let start = Date.parse(response.parkingStart.substring(0, 19));
             let difference = (now - start) / 60000 + 120;
-            let duration = Math.round(difference)
+            let duration = Math.round(difference);
             this.setState({
                 circleColor: 'green',
                 circleText: "Geparkt",
@@ -43,8 +43,10 @@ export class Overview extends Component {
             });
         } else
             this.setState({
-            circleColor: 'yellow',
-            circleText: "nicht geparkt"
+                circleColor: 'yellow',
+                circleText: "nicht geparkt",
+                cost: "0,00",
+                parkingDuration: "0 min"
         });
 
         this.setState({refreshing: false})
